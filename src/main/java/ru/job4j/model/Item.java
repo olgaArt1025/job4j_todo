@@ -2,6 +2,7 @@ package ru.job4j.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -10,16 +11,10 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String name;
     private String description;
-    private LocalDate created;
+    private Date created;
     private boolean done;
-
-    public Item() {
-    }
-
-    public Item(String name) {
-        this.description = name;
-    }
 
     public Integer getId() {
         return id;
@@ -29,12 +24,36 @@ public class Item {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String name) {
-        this.description = name;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     @Override
@@ -47,19 +66,19 @@ public class Item {
         }
         Item item = (Item) o;
         return Objects.equals(id, item.id)
-                && Objects.equals(description, item.description);
+                && Objects.equals(name, item.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "{"
                 + "id='" + id + '\''
-                + ", name='" + description + '\''
+                + ", name='" + name + '\''
                 + '}';
     }
 }

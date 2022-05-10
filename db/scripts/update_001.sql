@@ -1,6 +1,7 @@
-CREATE TABLE item (
+create table if not exists items (
    id SERIAL PRIMARY KEY,
+   name TEXT,
    description TEXT,
-   created Date,
+   created  TIMESTAMP,
    done boolean
 );

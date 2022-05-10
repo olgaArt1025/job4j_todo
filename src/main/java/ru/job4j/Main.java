@@ -7,31 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Properties;
-
 @SpringBootApplication
 public class Main {
-    private Properties loadDbProperties() {
-        Properties cfg = new Properties();
-        try (BufferedReader io = new BufferedReader(
-                new InputStreamReader(
-                        Main.class.getClassLoader()
-                                .getResourceAsStream("db.properties")
-                )
-        )) {
-            cfg.load(io);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-        try {
-            Class.forName(cfg.getProperty("jdbc.driver"));
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-        return cfg;
-    }
 
     @Bean(destroyMethod = "close")
     public SessionFactory sf() {
