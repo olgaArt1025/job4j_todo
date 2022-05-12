@@ -25,17 +25,16 @@ public class ItemService {
         return store.add(item);
     }
 
-    public boolean update(int id, Item item) {
-       return store.update(id, item);
+    public void update(int id, Item item) {
+       store.update(id, item);
     }
 
     public Item findById(int id) {
         return store.findById(id);
     }
 
-    public boolean delete(int id) {
+    public void  delete(int id) {
         store.delete(id);
-        return true;
     }
 
     public List<Item> findByName(String key) {

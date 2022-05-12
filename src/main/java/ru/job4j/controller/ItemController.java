@@ -68,8 +68,8 @@ public class ItemController {
     }
 
     @GetMapping("/delete/{itemId}")
-    public String delete(Model model, @PathVariable("itemId") int id) {
-        model.addAttribute("items", service.delete(id));
+    public String delete(@PathVariable("itemId") int id) {
+         service.delete(id);
         return "redirect:/items";
     }
 
