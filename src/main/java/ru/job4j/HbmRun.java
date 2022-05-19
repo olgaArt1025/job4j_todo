@@ -5,23 +5,38 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ru.job4j.model.Category;
 import ru.job4j.model.Item;
 import ru.job4j.model.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class HbmRun {
     public static void main(String[] args) {
+        List<Category> list = new ArrayList<>();
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
         try {
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-            User user = create(User.of("Olga", "123"), sf);
-            create(Item.of("name1", "description1", new Date(), false, user), sf);
-            for (Item item : findAll(Item.class, sf)) {
-                System.out.println(item.getName() + " " + item.getUser().getName());
-            }
+            Session session = sf.openSession();
+            session.beginTransaction();
+
+            Category one = Category.of("Развлечения");
+            session.save(one);
+
+            Category two = Category.of("Покупки");
+            session.save(two);
+
+            Category three = Category.of("Работа");
+            session.save(three);
+
+            Category four = Category.of("Домашние дела");
+            session.save(four);
+
+            session.getTransaction().commit();
+            session.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

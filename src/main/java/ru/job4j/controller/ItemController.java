@@ -8,17 +8,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.model.Item;
 import ru.job4j.model.User;
+import ru.job4j.service.CategoryService;
 import ru.job4j.service.ItemService;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 @Controller
 public class ItemController {
     private final ItemService service;
+    private final CategoryService categoryService;
 
-    public ItemController(ItemService service) {
+
+    public ItemController(ItemService service, CategoryService categoryService) {
         this.service = service;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/items")
@@ -31,6 +34,7 @@ public class ItemController {
 
     @GetMapping("/formAddItem")
     public String formAddItem(Model model) {
+        model.addAttribute("categories", categoryService.findAll());
         return "addItem";
     }
 
@@ -45,11 +49,13 @@ public class ItemController {
     @GetMapping("/formUpdateItem/{itemId}")
     public String formUpdateItem(Model model, @PathVariable("itemId") int id) {
         model.addAttribute("item", service.findById(id));
+        model.addAttribute("categories", categoryService.findAll());
         return "updateItem";
     }
 
     @PostMapping("/updateItem")
-    public String updateItem(@ModelAttribute Item item) {
+    public String updateItem(@ModelAttribute Item item, HttpSession session) {
+        item.setUser((User) session.getAttribute("user"));
         service.update(item.getId(), item);
         return "redirect:/items";
     }

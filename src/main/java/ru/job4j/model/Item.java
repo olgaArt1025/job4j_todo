@@ -1,12 +1,13 @@
 package ru.job4j.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "items")
-public class Item {
+public class Item implements Serializable  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -14,17 +15,23 @@ public class Item {
     private String description;
     private Date created;
     private boolean done;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public static Item of(String name, String description, Date created, boolean done, User user) {
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    public static Item of(String name, String description, Date created, boolean done, User user, Category category) {
         Item item = new Item();
         item.name = name;
         item.description = description;
         item.created = created;
         item.done = done;
         item.user = user;
+        item.category = category;
         return item;
     }
 
@@ -74,6 +81,14 @@ public class Item {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override

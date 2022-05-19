@@ -54,6 +54,13 @@
                         <label for="name">Выполнено</label>
                         <input type="checkbox" class="form-control" name="done" id="name" th:field="*{done}">
                     </div>
+                    <div class="form-group">
+                        <label for="category.id">Категория</label>
+                        <select class="form-control" id="category.id" name="category.id">
+                            <option th:each="category : ${categories}" th:value="${category.id}"
+                                    th:text="${category.name}"></option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
             </div>
