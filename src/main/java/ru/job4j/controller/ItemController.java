@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.model.Item;
+import ru.job4j.model.User;
 import ru.job4j.service.ItemService;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 @Controller
@@ -20,8 +22,10 @@ public class ItemController {
     }
 
     @GetMapping("/items")
-    public String candidates(Model model) {
-        model.addAttribute("items", service.findAll());
+    public String items(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("items", service.findAll(user));
         return "items";
     }
 
@@ -32,7 +36,8 @@ public class ItemController {
 
 
     @PostMapping("/createItem")
-    public String createItem(@ModelAttribute Item item) {
+    public String createItem(@ModelAttribute Item item, HttpSession session) {
+        item.setUser((User) session.getAttribute("user"));
         service.add(item);
         return "redirect:/items";
     }
@@ -50,14 +55,18 @@ public class ItemController {
     }
 
     @GetMapping("/completed")
-    public String completed(Model model) {
-        model.addAttribute("items", service.completed());
+    public String completed(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("items", service.completed(user));
         return "items";
     }
 
     @GetMapping("/fresh")
-    public String fresh(Model model) {
-        model.addAttribute("items", service.fresh());
+    public String fresh(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("items", service.fresh(user));
         return "items";
     }
 

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -15,44 +15,41 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <title>Todo</title>
+    <title>ToDo</title>
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">TODO list</a>
+        <a class="navbar-brand" href="#">Todo</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link active" th:href="@{/index}">Главная <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" th:href="@{/items}">Список дел</a>
+                </div>
+        </div>
+    </nav>
+    <div class="row pt-3">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Регистрация
+            </div>
+            <div class="card-body">
+                <form th:action="@{/registration}" method="POST" th:object="${user}">
+                    <input type="hidden" name="id" th:field="*{id}"/>
+                    <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" name="name" id="name" th:field="*{name}">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Пароль</label>
+                        <input type="text" class="form-control" name="password" id="password" th:field="*{password}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
             </div>
         </div>
-        <ul class="nav justify-content-end">
-            <p style="color:#0000FF">
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
-                    <span th:text="${user.name}"></span>
-                    <span> | Войти</span>
-                </a>
-            </p>
-            <p style="color:#0000FF">
-                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
-                    <span th:text="${user.name}"></span>
-                    <span> | Выйти</span>
-                </a>
-            </p>
-        </ul>
-    </nav>
-    <div class="row">
-        <table class="table">
-            <figure class="figure">
-                <img src="image.jpg" class="img-fluid figure-img rounded" alt="">
-                <figcaption class="figure-caption">Приложение "TODO список".
-                    Стек технологий: Spring boot, Thymeleaf, Bootstrap, Hibernate, PostgreSql</figcaption>
-            </figure>
-        </table>
     </div>
 </div>
 </body>

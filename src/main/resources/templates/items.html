@@ -33,6 +33,19 @@
                 <a class="nav-item nav-link" th:href="@{/fresh}">Новые</a>
             </div>
         </div>
+        <ul class="nav justify-content-end">
+            <p style="color:#0000FF">
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
+                    <span th:text="${user.name}"></span>
+                    <span> | Войти</span>
+                </a>
+            </p>
+            <p style="color:#0000FF">
+                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+                    <span th:text="${user.name}"></span>
+                    <span> | Выйти</span>
+                </a>
+            </p>
     </nav>
     <div class="row">
         <table class="table">
@@ -42,6 +55,7 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Дата создания</th>
                 <th scope="col">Состояние</th>
+                <th scope="col">Автор</th>
             </tr>
             </thead>
             <tbody>
@@ -60,6 +74,7 @@
                 <td>
                    <span th:text="${item.isDone} ? 'Выполнено' : 'Не выполнено'"></span>
                 </td>
+                <td th:text="${item.user}"></td>
             </tr>
             </tbody>
         </table>

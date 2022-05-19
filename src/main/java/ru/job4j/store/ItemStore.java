@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.Item;
+import ru.job4j.model.User;
 
 import java.util.Date;
 import java.util.List;
@@ -54,10 +55,11 @@ public class ItemStore {
         );
     }
 
-    public List<Item> findAll() {
+    public List<Item> findAll(User user) {
         return this.tx(
                 session -> {
-                    final List result = session.createQuery("from ru.job4j.model.Item").list();
+                    final List result = session.createQuery("from Item where user = :paramId")
+                    .setParameter("paramId", user).list();
                     return result;
                 }
         );
@@ -66,7 +68,7 @@ public class ItemStore {
     public List<Item> findByName(String key) {
         return this.tx(
                 session -> {
-                    final List result = session.createQuery("from ru.job4j.model.Item  where name = :paramName")
+                    final List result = session.createQuery("from Item  where name = :paramName")
                             .setParameter("paramName", key).list();
                     return result;
                 }
@@ -82,11 +84,12 @@ public class ItemStore {
         );
     }
 
-    public List<Item> condition(boolean done) {
+    public List<Item> condition(boolean done, User user) {
         return this.tx(
                 session -> {
-                    final List result = session.createQuery("from ru.job4j.model.Item  where done = :paramDone")
-                            .setParameter("paramDone", done).list();
+                    final List result = session.createQuery("from Item  where done = :paramDone and user = :paramId")
+                            .setParameter("paramDone", done)
+                            .setParameter("paramId", user).list();
                     return result;
                 }
         );

@@ -2,6 +2,7 @@ package ru.job4j.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.model.Item;
+import ru.job4j.model.User;
 import ru.job4j.store.ItemStore;
 
 import java.time.LocalDate;
@@ -17,8 +18,8 @@ public class ItemService {
         this.store = store;
     }
 
-    public Collection<Item> findAll() {
-        return store.findAll();
+    public Collection<Item> findAll(User user) {
+        return store.findAll(user);
     }
 
     public Item add(Item item) {
@@ -41,12 +42,12 @@ public class ItemService {
         return store.findByName(key);
     }
 
-    public Collection<Item> completed() {
-        return store.condition(true);
+    public Collection<Item> completed(User user) {
+        return store.condition(true, user);
     }
 
-    public Collection<Item> fresh() {
-        return store.condition(false);
+    public Collection<Item> fresh(User user) {
+        return store.condition(false, user);
     }
 
     public void completed(int id) {
