@@ -3,7 +3,9 @@ package ru.job4j.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "items")
@@ -20,18 +22,16 @@ public class Item implements Serializable  {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Category> categories = new HashSet<>();
 
-    public static Item of(String name, String description, Date created, boolean done, User user, Category category) {
+    public static Item of(String name, String description, Date created, boolean done, User user) {
         Item item = new Item();
         item.name = name;
         item.description = description;
         item.created = created;
         item.done = done;
         item.user = user;
-        item.category = category;
         return item;
     }
 
@@ -83,12 +83,12 @@ public class Item implements Serializable  {
         this.user = user;
     }
 
-    public Category getCategory() {
-        return category;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     @Override

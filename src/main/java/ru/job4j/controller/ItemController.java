@@ -2,16 +2,17 @@ package ru.job4j.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import ru.job4j.model.Category;
 import ru.job4j.model.Item;
 import ru.job4j.model.User;
 import ru.job4j.service.CategoryService;
 import ru.job4j.service.ItemService;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ItemController {
@@ -38,9 +39,17 @@ public class ItemController {
         return "addItem";
     }
 
-
     @PostMapping("/createItem")
-    public String createItem(@ModelAttribute Item item, HttpSession session) {
+    public String createItem(@ModelAttribute Item item,
+                             @RequestParam(value = "category.id", required = false) List<Integer> categoriesId,
+                             HttpSession session) {
+        Set<Category> categories = new HashSet<>();
+        if (categoriesId != null) {
+            for (Integer categoryId : categoriesId) {
+                categories.add(categoryService.findById(categoryId));
+            }
+        }
+        item.setCategories(categories);
         item.setUser((User) session.getAttribute("user"));
         service.add(item);
         return "redirect:/items";

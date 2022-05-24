@@ -1,7 +1,8 @@
 package ru.job4j.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,9 +14,6 @@ public class Category {
     private Integer id;
 
     private String name;
-
-    @OneToMany(mappedBy = "category")
-    private List<Item> items = new ArrayList<>();
 
     public Category() {
     }
@@ -47,13 +45,6 @@ public class Category {
         this.name = name;
     }
 
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -75,6 +66,5 @@ public class Category {
     @Override
     public String toString() {
         return name;
-
     }
 }

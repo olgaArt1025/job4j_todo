@@ -12,6 +12,7 @@ import ru.job4j.model.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class HbmRun {
     public static void main(String[] args) {
@@ -23,7 +24,7 @@ public class HbmRun {
             Session session = sf.openSession();
             session.beginTransaction();
 
-            Category one = Category.of("Развлечения");
+          Category one = Category.of("Развлечения");
             session.save(one);
 
             Category two = Category.of("Покупки");
@@ -35,6 +36,10 @@ public class HbmRun {
             Category four = Category.of("Домашние дела");
             session.save(four);
 
+            Item first = Item.of("Сходите в кино", "Анчартед:На картах не значится",   new Date(), false, new User(1, "Olga", "123"));
+            first.getCategories().add(one);
+
+            session.persist(first);
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {

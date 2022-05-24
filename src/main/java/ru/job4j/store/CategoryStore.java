@@ -26,6 +26,15 @@ public class CategoryStore {
         );
     }
 
+    public Category findById(int id) {
+        return this.tx(
+                session -> {
+                    final Category result = session.get(Category.class, id);
+                    return result;
+                }
+        );
+    }
+
     private <T> T tx(final Function<Session, T> command) {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();

@@ -76,7 +76,10 @@
                    <span th:text="${item.isDone} ? 'Выполнено' : 'Не выполнено'"></span>
                 </td>
                 <td th:text="${item.user}"></td>
-                <td th:text="${item.category}"></td>
+                <td>
+                   <span th:each="category,iterStat : ${item.getCategories()}"
+                         th:text="${category.name} + ${!iterStat.last ? ', ' : ''}"></span>
+                </td>
             </tr>
             </tbody>
         </table>

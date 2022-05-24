@@ -58,7 +58,8 @@ public class ItemStore {
     public List<Item> findAll(User user) {
         return this.tx(
                 session -> {
-                    final List result = session.createQuery("from Item where user = :paramId")
+                    final List result = session.createQuery("select distinct c from Item  c join fetch c.categories "
+                                    + "where c.user = :paramId")
                     .setParameter("paramId", user).list();
                     return result;
                 }
@@ -68,12 +69,14 @@ public class ItemStore {
     public List<Item> findByName(String key) {
         return this.tx(
                 session -> {
-                    final List result = session.createQuery("from Item  where name = :paramName")
+                    final List result = session.createQuery("select distinct c from Item  c join fetch c.categories"
+                                    + " where c.name = :paramName")
                             .setParameter("paramName", key).list();
                     return result;
                 }
         );
     }
+
 
     public Item findById(int id) {
         return this.tx(
@@ -87,7 +90,8 @@ public class ItemStore {
     public List<Item> condition(boolean done, User user) {
         return this.tx(
                 session -> {
-                    final List result = session.createQuery("from Item  where done = :paramDone and user = :paramId")
+                    final List result = session.createQuery("select distinct c from Item  c join fetch c.categories "
+                                    + "where c.done = :paramDone and c.user = :paramId")
                             .setParameter("paramDone", done)
                             .setParameter("paramId", user).list();
                     return result;
@@ -98,7 +102,7 @@ public class ItemStore {
     public void completed(int id) {
         this.tx(
                 session -> {
-        session.createQuery("update ru.job4j.model.Item i set i.done = true where i.id = :id").
+        session.createQuery("update Item i set i.done = true where i.id = :id").
                 setParameter("id", id).executeUpdate();
                     return null;
                 }

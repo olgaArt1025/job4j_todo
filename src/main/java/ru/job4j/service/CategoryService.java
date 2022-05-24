@@ -17,4 +17,8 @@ public class CategoryService {
     public Collection<Category> findAll() {
         return store.findAll();
     }
+
+    public Category findById(Integer id) {
+        return store.findById(id);
+    }
 }
