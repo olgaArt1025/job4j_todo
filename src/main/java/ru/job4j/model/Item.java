@@ -15,6 +15,7 @@ public class Item implements Serializable  {
     private Integer id;
     private String name;
     private String description;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date created;
     private boolean done;
 
@@ -111,9 +112,12 @@ public class Item implements Serializable  {
 
     @Override
     public String toString() {
-        return "{"
-                + "id='" + id + '\''
+        return "Item{"
+                + "id=" + id
                 + ", name='" + name + '\''
+                + ", description='" + description + '\''
+                + ", created=" + created
+                + ", done=" + done
                 + '}';
     }
 }
